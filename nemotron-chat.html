@@ -41,9 +41,8 @@
   /* ── HEADER ── */
   header {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 20px;
+    flex-direction: column;
+    gap: 0;
     border-bottom: 1px solid var(--border);
     background: var(--surface);
     flex-shrink: 0;
@@ -51,22 +50,30 @@
     z-index: 10;
   }
 
-  .logo {
+  .header-top {
     display: flex;
     align-items: center;
     gap: 10px;
+    padding: 12px 16px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
   }
 
   .logo-icon {
-    width: 32px; height: 32px;
+    width: 30px; height: 30px;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
     border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 16px;
+    font-size: 15px;
   }
 
   .logo-text {
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 800;
     letter-spacing: -0.5px;
     color: var(--text);
@@ -78,32 +85,39 @@
 
   .model-badge {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
+    font-size: 9px;
     color: var(--text-dim);
     background: var(--surface2);
     border: 1px solid var(--border);
-    padding: 3px 8px;
+    padding: 2px 7px;
     border-radius: 20px;
-    margin-left: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 160px;
   }
 
   .header-right {
     margin-left: auto;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    flex-shrink: 0;
   }
 
-  .api-key-wrap {
+  /* API Key bar — full width below the top row on mobile */
+  .api-key-bar {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
+    padding: 0 16px 10px;
   }
 
-  .api-key-wrap label {
+  .api-key-bar label {
     font-size: 11px;
     color: var(--text-dim);
     white-space: nowrap;
+    flex-shrink: 0;
   }
 
   #apiKey {
@@ -113,8 +127,9 @@
     border: 1px solid var(--border);
     border-radius: 8px;
     color: var(--text);
-    padding: 6px 10px;
-    width: 220px;
+    padding: 7px 10px;
+    flex: 1;
+    min-width: 0;
     outline: none;
     transition: border-color 0.2s;
   }
@@ -138,15 +153,38 @@
     color: var(--text-dim);
     font-family: 'Syne', sans-serif;
     font-size: 12px;
-    padding: 6px 12px;
+    padding: 6px 10px;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   #clearBtn:hover {
     border-color: var(--error);
     color: var(--error);
+  }
+
+  /* ── DESKTOP: restore single-row header ── */
+  @media (min-width: 640px) {
+    header {
+      flex-direction: row;
+      align-items: center;
+      padding: 14px 20px;
+      gap: 12px;
+    }
+    .header-top {
+      padding: 0;
+      flex: 0 0 auto;
+    }
+    .api-key-bar {
+      padding: 0;
+      flex: 1;
+      justify-content: flex-end;
+    }
+    #apiKey { max-width: 220px; flex: 0 0 220px; }
+    .model-badge { max-width: 220px; }
   }
 
   /* ── CHAT AREA ── */
@@ -206,6 +244,15 @@
     font-size: 14.5px;
     line-height: 1.65;
     word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  @media (max-width: 639px) {
+    .bubble { font-size: 13.5px; padding: 10px 13px; }
+    .bubble-wrap { max-width: calc(100vw - 70px); }
+    .message-row { padding: 5px 12px; gap: 8px; }
+    .avatar { width: 28px; height: 28px; font-size: 12px; }
+    .avatar.bot-av { font-size: 14px; }
   }
 
   .user .bubble {
@@ -273,6 +320,11 @@
     border-radius: 8px;
     margin: 10px 0;
     overflow: hidden;
+    max-width: 100%;
+  }
+
+  @media (max-width: 639px) {
+    .bubble pre { border-radius: 6px; }
   }
 
   .code-header {
@@ -376,6 +428,7 @@
     justify-content: center;
     margin-top: 8px;
     max-width: 500px;
+    padding: 0 8px;
   }
 
   .suggestion-chip {
@@ -389,6 +442,13 @@
     color: var(--text-dim);
   }
 
+  @media (max-width: 639px) {
+    .suggestion-chip { font-size: 12px; padding: 6px 12px; }
+    .empty-title { font-size: 17px; }
+    .empty-sub { font-size: 13px; }
+    .empty-icon { font-size: 36px; }
+  }
+
   .suggestion-chip:hover {
     border-color: var(--accent);
     color: var(--accent);
@@ -397,10 +457,14 @@
 
   /* ── INPUT AREA ── */
   #inputArea {
-    padding: 12px 20px 16px;
+    padding: 12px 16px 16px;
     border-top: 1px solid var(--border);
     background: var(--surface);
     flex-shrink: 0;
+  }
+
+  @media (min-width: 640px) {
+    #inputArea { padding: 12px 20px 16px; }
   }
 
   .input-box {
@@ -477,6 +541,11 @@
     font-family: 'JetBrains Mono', monospace;
   }
 
+  @media (max-width: 639px) {
+    .input-hint { display: none; }
+    #userInput { font-size: 16px; /* prevents iOS zoom on focus */ }
+  }
+
   /* ── TOAST ── */
   #toast {
     position: fixed;
@@ -499,18 +568,20 @@
 <body>
 
 <header>
-  <div class="logo">
-    <div class="logo-icon">⚡</div>
-    <div class="logo-text">Nemo<span>tron</span></div>
-    <div class="model-badge">nvidia/nemotron-3-ultra-550b</div>
-  </div>
-  <div class="header-right">
-    <div class="api-key-wrap">
-      <label for="apiKey">OpenRouter Key</label>
-      <input type="password" id="apiKey" placeholder="sk-or-..." autocomplete="off">
-      <div class="key-status" id="keyStatus" title="Clé non configurée"></div>
+  <div class="header-top">
+    <div class="logo">
+      <div class="logo-icon">⚡</div>
+      <div class="logo-text">Nemo<span>tron</span></div>
+      <div class="model-badge">nvidia/nemotron-3-super</div>
     </div>
-    <button id="clearBtn" onclick="clearConversation()">🗑 Effacer</button>
+    <div class="header-right">
+      <button id="clearBtn" onclick="clearConversation()">🗑 Effacer</button>
+    </div>
+  </div>
+  <div class="api-key-bar">
+    <label for="apiKey">Clé OpenRouter</label>
+    <input type="password" id="apiKey" placeholder="sk-or-..." autocomplete="off">
+    <div class="key-status" id="keyStatus" title="Clé non configurée"></div>
   </div>
 </header>
 
@@ -543,7 +614,7 @@
 <div id="toast"></div>
 
 <script>
-const MODEL = 'nvidia/nemotron-3-ultra-550b-a55b:free';
+const MODEL = 'nvidia/nemotron-3-super-120b-a12b:free';
 const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 const SYSTEM_PROMPT = `Tu es un assistant expert en programmation et développement logiciel. Tu réponds UNIQUEMENT en français.
 
@@ -637,6 +708,7 @@ async function sendMessage() {
   let buffer = '';
 
   abortController = new AbortController();
+  const timeoutId = setTimeout(() => abortController.abort(), 30000); // 30s timeout
 
   try {
     const res = await fetch(API_URL, {
@@ -657,6 +729,7 @@ async function sendMessage() {
       }),
       signal: abortController.signal
     });
+    clearTimeout(timeoutId);
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
@@ -732,8 +805,12 @@ async function sendMessage() {
     localStorage.setItem('chatHistory', JSON.stringify(history));
 
   } catch (err) {
+    clearTimeout(timeoutId);
     if (err.name === 'AbortError') {
-      renderBubble(bubble, mainContent || '_Génération interrompue._', false);
+      const msg = isStreaming
+        ? '_Génération interrompue._'
+        : '**Timeout :** Le modèle n\'a pas répondu en 30 secondes. Le serveur est peut-être surchargé, réessaie dans quelques instants.';
+      renderBubble(bubble, mainContent || msg, false);
     } else {
       renderBubble(bubble, `**Erreur :** ${err.message}\n\nVérifie ta clé OpenRouter et réessaie.`, false);
       console.error(err);
